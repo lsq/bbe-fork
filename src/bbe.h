@@ -48,10 +48,7 @@
 
 #include <stdio.h>
 
-#ifndef HAVE_OFF_T
-#define long int off_t
-#endif
-
+#define off_t long int
 /* Types */
 
 /* Constants */
