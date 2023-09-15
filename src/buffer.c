@@ -53,7 +53,7 @@ set_output_file(const char *file)
         out_stream.file = "(stdout)";
     } else
     {
-        out_stream.fd = open(file,O_WRONLY | O_CREAT | O_TRUNC,S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);
+        out_stream.fd = open(file,O_WRONLY | O_CREAT | O_TRUNC | O_BINARY,S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);
         if(out_stream.fd == -1) panic("Cannot open for writing",file,strerror(errno));
         out_stream.file = xstrdup(file);
     }
@@ -97,7 +97,7 @@ set_input_file(const char *file)
         new->file = "(stdin)";
     } else
     {
-        new->fd = open(file,O_RDONLY);
+        new->fd = open(file,O_RDONLY | O_BINARY);
         if(new->fd == -1) panic("Cannot open file for reading",file,strerror(errno));
         new->file = xstrdup(file);
     }
