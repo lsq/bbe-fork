@@ -564,7 +564,7 @@ open_w_files(off_t block_number)
 
                 
 
-/* init_commands, initialize those wich need it, currently w - open file and rpos=0 for all */
+/* init_commands, initialize those which need it, currently w - open file and rpos=0 for all */
 void
 init_commands(struct commands *commands)
 {
