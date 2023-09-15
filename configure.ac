@@ -25,7 +25,7 @@ dnl Checks for libraries.
 dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS(features.h error.h errno.h getopt.h io.h)
-AC_CHECK_FUNCS(getline getopt_long) 
+AC_CHECK_FUNCS(getline getopt_long fseeko) 
     
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_SYS_LARGEFILE

@@ -51,8 +51,35 @@
 #endif
 
 #include <stdio.h>
+#include <fcntl.h>
 
-#define off_t long int
+#if !defined(HAVE_S_IRUSR) || !defined(HAVE_S_IRGRP)
+/* sys/stat.h */
+#define S_IRUSR S_IREAD
+#define S_IWUSR S_IWRITE
+#define S_IRGRP S_IRUSR
+#define S_IWGRP S_IWUSR
+#define S_IROTH S_IRUSR
+#define S_IWOTH S_IWUSR
+#endif
+
+#ifndef HAVE_FSEEKO
+#define fseeko(fd, pos, mode)		_fseeki64(fd, pos, mode)
+#endif
+
+#ifndef HAVE_SSIZE_T
+typedef __int64		ssize_t;
+#endif
+
+#ifndef HAVE_OFF_T
+typedef __int64		off_t;
+#endif
+
+#ifndef O_BINARY
+#define O_BINARY  0
+#endif
+
+
 /* Types */
 
 /* Constants */
@@ -63,6 +90,8 @@
 #ifndef EXIT_SUCCESS
 #define EXIT_SUCCESS 0
 #endif
+
+#ifndef HAVE_STDOUT_FILENO
 
 #ifndef STDIN_FILENO
 #  define STDIN_FILENO  fileno(stdin)
@@ -75,6 +104,8 @@
 #ifndef STDERR_FILENO
 #  define STDERR_FILENO  fileno(stderr)
 #endif
+
+#endif  // HAVE_STDOUT_FILENO
 
 /* Input buffer size */
 #define INPUT_BUFFER_LOW (16*1024)
