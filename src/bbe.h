@@ -46,6 +46,10 @@
 #include <unistd.h>
 #endif 
 
+#ifdef HAVE_IO_H
+#include <io.h>
+#endif
+
 #include <stdio.h>
 
 #ifndef HAVE_OFF_T
@@ -56,8 +60,24 @@
 
 /* Constants */
 /* exit values */
+#ifndef EXIT_FAILURE
 #define EXIT_FAILURE 1
+#endif
+#ifndef EXIT_SUCCESS
 #define EXIT_SUCCESS 0
+#endif
+
+#ifndef STDIN_FILENO
+#  define STDIN_FILENO  fileno(stdin)
+#endif
+
+#ifndef STDOUT_FILENO
+#  define STDOUT_FILENO  fileno(stdout)
+#endif
+
+#ifndef STDERR_FILENO
+#  define STDERR_FILENO  fileno(stderr)
+#endif
 
 /* Input buffer size */
 #define INPUT_BUFFER_LOW (16*1024)
@@ -153,16 +173,16 @@ struct output_buffer {
 
 /* function prototypes */
 extern void 
-panic(char *msg,char *info,char *syserror);
+panic(const char *msg,const char *info,const char *syserror);
 
 extern void *
 xmalloc (size_t size);
 
 extern void
-set_output_file(char *file);
+set_output_file(const char *file);
 
 extern void
-set_input_file(char *file);
+set_input_file(const char *file);
 
 extern void
 init_buffer();
@@ -183,7 +203,7 @@ extern inline int
 last_byte();
 
 extern void
-write_buffer(unsigned char *buf,off_t length);
+write_buffer(const unsigned char *buf,off_t length);
 
 extern inline void
 put_byte(unsigned char byte);
@@ -210,7 +230,7 @@ extern void
 execute_program(struct commands *c);
 
 extern void
-write_string(char *string);
+write_string(const char *string);
 
 extern char *
 get_current_file(void);
@@ -222,7 +242,7 @@ extern inline unsigned char *
 block_end_pos();
 
 extern char *
-xstrdup(char *str);
+xstrdup(const char *str);
 
 /* global variables */
 extern struct block block;

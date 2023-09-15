@@ -35,7 +35,7 @@ xmalloc (size_t size)
 }
 
 char *
-xstrdup(char *str)
+xstrdup(const char *str)
 {
     char *ret = strdup(str);
     if (ret == NULL) panic("Out of memory",NULL,NULL);

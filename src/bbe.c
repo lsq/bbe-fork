@@ -43,7 +43,7 @@ static char *program = "bbe";
 #ifdef VERSION
 static char *version = VERSION;
 #else
-static char *version = "0.1.7";
+static char *version = "0.2.2";
 #endif
 
 #ifdef PACKAGE_BUGREPORT
@@ -66,7 +66,7 @@ char *panic_info = NULL;
 int output_only_block = 0;
 
 /* c command conversions */
-char *convert_strings[] = {
+const char *convert_strings[] = {
     "BCDASC",
     "ASCBCD",
           "",
@@ -81,12 +81,12 @@ char *convert_strings[] = {
 #define BLOCK_END_COMMANDS "A<"
 
 /* format types for p command */
-char *p_formats="DOHAB";
+const char *p_formats="DOHAB";
 
 /* formats for F and B commands */
-char *FB_formats="DOH";
+const char *FB_formats="DOH";
 
-static char short_opts[] = "b:e:f:o:s?V";
+static const char short_opts[] = "b:e:f:o:s?V";
 
 #ifdef HAVE_GETOPT_LONG
 static struct option long_opts[] = {
@@ -102,7 +102,7 @@ static struct option long_opts[] = {
 #endif
 
 void
-panic(char *msg,char *info,char *syserror)
+panic(const char *msg,const char *info,const char *syserror)
 {
     if(panic_info != NULL) fprintf(stderr,"%s: %s",program,panic_info);
 
@@ -124,10 +124,10 @@ panic(char *msg,char *info,char *syserror)
 
 /* parse a long int, can start with n (dec), x (hex), 0 (oct) */
 off_t
-parse_long(char *long_int)
+parse_long(const char *long_int)
 {
     long long int l;
-    char *scan = long_int;
+    const char *scan = long_int;
     char type='d';           // others are x and o
 
 
@@ -168,9 +168,9 @@ parse_long(char *long_int)
 /* parse a string, string can contain \n, \xn, \0n and \\
    escape codes. memory will be allocated */
 unsigned char *
-parse_string(char *string,off_t *length)
+parse_string(const char *string,off_t *length)
 {
-    char *p;
+    const char *p;
     int j,k,i = 0;
     int min_len;
     unsigned char buf[INPUT_BUFFER_LOW+1];
@@ -270,10 +270,10 @@ parse_string(char *string,off_t *length)
 
 /* parse a block definition and save it to block */
 static void
-parse_block(char *bs)
+parse_block(const char *bs)
 {
     char slash_char;
-    char *p = bs;
+    const char *p = bs;
     int i = 0;
     char *buf;
 
@@ -391,11 +391,14 @@ parse_block(char *bs)
 
 /* parse one command, commands are in list pointed by commands */
 void
-parse_command(char *command_string)
+parse_command(const char *command_string)
 {
-    struct command_list *curr,*new,**start;
-    char *c,*p,*buf;
-    char *f;
+    struct command_list* curr = NULL;
+    struct command_list* new;
+    struct command_list ** start = NULL;
+    char *c,*buf;
+    const char* p;
+    const char *f;
     char *token[10];
     char slash_char;
     int i,j;
@@ -597,10 +600,10 @@ parse_command(char *command_string)
    and ;s inside " or ' are not separators
    */
 void 
-parse_commands(char *command_string)
+parse_commands(const char *command_string)
 {
-    char *c;
-    char *start;
+    const char *c;
+    const char *start;
     int inside_d = 0;  // double
     int inside_s = 0;  // single 
 
@@ -635,8 +638,9 @@ parse_commands(char *command_string)
             case ';':
                 if(!inside_d && !inside_s)
                 {
-                    *c = 0;
+                    *((char *)c) = 0;
                     parse_command(start);
+                    *((char *)c) = ';';     // reset NUL byte patching above
                     start = c + 1;
                 }
                 break;
@@ -654,7 +658,7 @@ parse_commands(char *command_string)
 /* parse one command, commands are in list 
    read commands from file */
 void
-parse_command_file(char *file)
+parse_command_file(const char *file)
 {
     FILE *fp;
     char *line;
@@ -743,7 +747,7 @@ print_version()
 
 
 int
-main (int argc, char **argv)
+main (int argc, const char **argv)
 {
     int opt;
 

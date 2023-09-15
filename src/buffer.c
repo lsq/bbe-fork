@@ -43,7 +43,7 @@ struct output_buffer out_buffer;
 
 /* open the output file */
 void 
-set_output_file(char *file)
+set_output_file(const char *file)
 {
     if (out_stream.file != NULL) panic("Only one output file can be defined",NULL,NULL);
 
@@ -69,7 +69,7 @@ write_output_stream(unsigned char *buffer, ssize_t length)
 
 /* open a input file and put it in input file list */
 void
-set_input_file(char *file)
+set_input_file(const char *file)
 {
     struct io_file *new,*curr;
 
@@ -108,7 +108,7 @@ char *
 get_current_file(void)
 {
     struct io_file *f = in_stream_start;
-    struct io_file *prev;
+    struct io_file *prev = NULL;
     off_t current_offset = in_buffer.stream_offset + (off_t) (in_buffer.read_pos-in_buffer.buffer);
 
     if(f == NULL) return "";
@@ -122,6 +122,9 @@ get_current_file(void)
             f = NULL;
         }
     }
+
+    if(prev == NULL) return "";
+
     return prev->file;
 }
 
@@ -458,9 +461,9 @@ find_block()
 
 /* write null terminated string */
 void
-write_string(char *string)
+write_string(const char *string)
 {
-    register char *f;
+    const char *f;
 
     f = string;
 
@@ -471,9 +474,8 @@ write_string(char *string)
 
 /* write_buffer at the current write position */
 void
-write_buffer(unsigned char *buf,off_t length)
+write_buffer(const unsigned char *buf,off_t length)
 {
-
     if(!length) return;
 
     if(out_buffer.write_pos + length >= out_buffer.end)

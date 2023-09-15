@@ -30,16 +30,16 @@
 #include <ctype.h>
 
 /* tells if current byte should be deleted */
-static int delete_this_byte;
+static int delete_this_byte = 0;
 
 /* tells if current block should be deleted */
-static int delete_this_block;
+static int delete_this_block = 0;
 
 /* tells if current block should be skipped */
-static int skip_this_block;
+static int skip_this_block = 0;
 
 /* tells if i or s commands are inserting bytes, meaningfull at end of the block */
-static int inserting;
+static int inserting = 0;
 
 /* tells if there is w-command with file having %d 
    this is only for performance 
@@ -47,7 +47,7 @@ static int inserting;
 static int w_commands_block_num = 0;
 
 /* command list for write_w_command */
-static struct command_list *current_byte_commands;
+static struct command_list *current_byte_commands = NULL;
 
 /* most significant bit of byte */
 #define BYTE_MASK (1 << (sizeof(unsigned char) * 8 - 1))
@@ -533,7 +533,7 @@ void
 open_w_files(off_t block_number)
 {
     struct command_list *c;
-    static char file[4096];
+    char file[4096];
 
     c = current_byte_commands;
 
