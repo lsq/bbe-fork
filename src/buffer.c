@@ -51,6 +51,11 @@ set_output_file(const char *file)
     {
         out_stream.fd = STDOUT_FILENO;
         out_stream.file = "(stdout)";
+
+#ifdef _WIN32
+        /* Need to set stdout to binary mode for Windows */
+        setmode(STDOUT_FILENO, O_BINARY);
+#endif
     } else
     {
         out_stream.fd = open(file,O_WRONLY | O_CREAT | O_TRUNC | O_BINARY,S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);
@@ -95,6 +100,11 @@ set_input_file(const char *file)
     {
         new->fd = STDIN_FILENO;
         new->file = "(stdin)";
+
+#ifdef _WIN32
+        /* Need to set stdin to binary mode for Windows */
+        setmode(STDIN_FILENO, O_BINARY);
+#endif
     } else
     {
         new->fd = open(file,O_RDONLY | O_BINARY);
