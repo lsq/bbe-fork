@@ -345,7 +345,7 @@ last_byte()
 }
 
 /* returns true if end of stream has been reached */
-inline int
+static inline int
 end_of_stream()
 {
     if(in_buffer.stream_end != NULL && in_buffer.stream_end == in_buffer.read_pos) 
