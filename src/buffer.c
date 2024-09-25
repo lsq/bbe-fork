@@ -142,7 +142,7 @@ get_current_file(void)
 
 /* initialize in and out buffers */
 void
-init_buffer()
+init_buffer(void)
 {
     in_buffer.buffer = xmalloc(INPUT_BUFFER_SIZE);
     in_buffer.read_pos = NULL;
@@ -157,7 +157,7 @@ init_buffer()
 }
 
 ssize_t
-read_input_stream()
+read_input_stream(void)
 {
     ssize_t read_count,last_read,to_be_read,to_be_saved;
     unsigned char *buffer_write_pos;
@@ -205,21 +205,21 @@ read_input_stream()
 
 /* reads byte from the buffer */
 inline unsigned char  
-read_byte()
+read_byte(void)
 {
     return *in_buffer.read_pos;
 }
 
 /* returns pointer to the read position */
 inline unsigned char *
-read_pos()
+read_pos(void)
 {
     return in_buffer.read_pos;
 }
 
 /* return the block end pointer */
 inline unsigned char *
-block_end_pos()
+block_end_pos(void)
 {
     return in_buffer.block_end;
 }
@@ -228,7 +228,7 @@ block_end_pos()
 /* returns false in case of end of stream */
 
 inline int 
-get_next_byte()
+get_next_byte(void)
 {
     if(in_buffer.read_pos >= in_buffer.low_pos) 
     {
@@ -251,7 +251,7 @@ get_next_byte()
 
 /* check if the eof current block is in buffer and mark it in_buffer.block_end */
 void
-mark_block_end()
+mark_block_end(void)
 {
     unsigned char *safe_search,*scan;
     int i;
@@ -349,14 +349,14 @@ mark_block_end()
 
 /* returns true if current byte is last in block */
 inline int
-last_byte()
+last_byte(void)
 {
     return in_buffer.block_end == in_buffer.read_pos;
 }
 
 /* returns true if end of stream has been reached */
 static inline int
-end_of_stream()
+end_of_stream(void)
 {
     if(in_buffer.stream_end != NULL && in_buffer.stream_end == in_buffer.read_pos) 
     {
@@ -370,7 +370,7 @@ end_of_stream()
 /* read for stream to input buffer and advance the read_pos to the start of the buffer */
 /* in_buffer.read_pos should point to last byte of previous block */
 int
-find_block()
+find_block(void)
 {
     unsigned char *safe_search,*scan_start;
     register int i;
@@ -508,7 +508,7 @@ put_byte(unsigned char byte)
 /* next_byte, advance the write pointer by one */
 /* if buffer full write it to disk */
 inline void
-write_next_byte()
+write_next_byte(void)
 {
     out_buffer.write_pos++;
     out_buffer.block_offset++;
@@ -520,7 +520,7 @@ write_next_byte()
 
 /* write unwritten data from buffer to disk */
 void
-flush_buffer()
+flush_buffer(void)
 {
     write_output_stream(out_buffer.buffer,out_buffer.write_pos - out_buffer.buffer);
     write_w_command(out_buffer.buffer,out_buffer.write_pos - out_buffer.buffer);
@@ -529,7 +529,7 @@ flush_buffer()
 
 /* close_output_stream */
 void
-close_output_stream()
+close_output_stream(void)
 {
     if(close(out_stream.fd) == -1) panic("Error closing output stream",out_stream.file,strerror(errno));
 }

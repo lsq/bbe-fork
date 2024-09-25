@@ -213,22 +213,22 @@ extern void
 set_input_file(const char *file);
 
 extern void
-init_buffer();
+init_buffer(void);
 
 extern inline unsigned char  
-read_byte();
+read_byte(void);
 
 extern inline int 
-get_next_byte();
+get_next_byte(void);
 
 extern void
-mark_block_end();
+mark_block_end(void);
 
 extern int
-find_block();
+find_block(void);
 
 extern inline int
-last_byte();
+last_byte(void);
 
 extern void
 write_buffer(const unsigned char *buf,off_t length);
@@ -237,10 +237,10 @@ extern inline void
 put_byte(unsigned char byte);
 
 extern inline void
-write_next_byte();
+write_next_byte(void);
  
 extern void
-flush_buffer();
+flush_buffer(void);
 
 extern void
 init_commands(struct commands *c);
@@ -249,7 +249,7 @@ extern void
 close_commands(struct commands *c);
 
 extern void
-close_output_stream();
+close_output_stream(void);
 
 extern void
 write_w_command(unsigned char *buf,size_t length);
@@ -264,10 +264,10 @@ extern char *
 get_current_file(void);
 
 extern inline unsigned char *
-read_pos();
+read_pos(void);
 
 extern inline unsigned char *
-block_end_pos();
+block_end_pos(void);
 
 extern char *
 xstrdup(const char *str);

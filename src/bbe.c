@@ -737,7 +737,7 @@ usage(int opt)
 }
 
 void
-print_version()
+print_version(void)
 {
     printf("%s version %s\n",program,version);
     printf("Copyright (c) 2005 Timo Savinen\n\n");
