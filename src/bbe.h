@@ -63,16 +63,20 @@
 #define S_IWOTH S_IWUSR
 #endif
 
+#ifdef _WIN64
 #ifndef HAVE_FSEEKO
 #define fseeko(fd, pos, mode)		_fseeki64(fd, pos, mode)
 #endif
+#endif
 
+#ifdef _WIN64
 #ifndef HAVE_SSIZE_T
 typedef __int64		ssize_t;
 #endif
 
 #ifndef HAVE_OFF_T
 typedef __int64		off_t;
+#endif
 #endif
 
 #ifndef O_BINARY

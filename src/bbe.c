@@ -756,7 +756,7 @@ main (int argc, const char **argv)
     cmds.byte = NULL;
     cmds.block_end = NULL;
 #ifdef HAVE_GETOPT_LONG
-    while ((opt = getopt_long(argc,argv,short_opts,long_opts,NULL)) != -1)
+    while ((opt = getopt_long(argc,(char* const*)argv,short_opts,long_opts,NULL)) != -1)
 #else
     while ((opt = getopt(argc,argv,short_opts)) != -1)
 #endif
